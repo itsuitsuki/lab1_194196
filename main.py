@@ -4,18 +4,26 @@ import sys
 import os
 
 def fetch_restaurant_data(restaurant_name: str) -> Dict[str, List[str]]:
-    # TODO
+    # DONE
     # This function takes in a restaurant name and returns the reviews for that restaurant. 
     # The output should be a dictionary with the key being the restaurant name and the value being a list of reviews for that restaurant.
     # The "data fetch agent" should have access to this function signature, and it should be able to suggest this as a function call. 
     # Example:
     # > fetch_restaurant_data("Applebee's")
     # {"Applebee's": ["The food at Applebee's was average, with nothing particularly standing out.", ...]}
-    pass
+    
+    # Implementation
+    # read restaurant-data.txt
+    with open("restaurant-data.txt", "r") as f:
+        lines = f.readlines()
+    # find the restaurant name
+    comments_wrt_name = [line.split(". ")[1] for line in lines if restaurant_name in line.split(". ")[0]] # "xxx. YYYY(comment)"
+    return {restaurant_name: comments_wrt_name}
+    
 
 
 def calculate_overall_score(restaurant_name: str, food_scores: List[int], customer_service_scores: List[int]) -> Dict[str, float]:
-    # TODO
+    # DONE
     # This function takes in a restaurant name, a list of food scores from 1-5, and a list of customer service scores from 1-5
     # The output should be a score between 0 and 10, which is computed as the following:
     # SUM(sqrt(food_scores[i]**2 * customer_service_scores[i]) * 1/(N * sqrt(125)) * 10
@@ -24,7 +32,13 @@ def calculate_overall_score(restaurant_name: str, food_scores: List[int], custom
     # > calculate_overall_score("Applebee's", [1, 2, 3, 4, 5], [1, 2, 3, 4, 5])
     # {"Applebee's": 5.04}
     # NOTE: be sure to round the score to 2 decimal places.
-    pass
+    def before_sqrt(food_score: int, customer_service_score: int) -> float:
+        return food_score**2 * customer_service_score
+    N = len(food_scores)
+    multiplier = 1/(N * (125)**0.5) * 10
+    sqrt_list = [before_sqrt(food_score, customer_service_score)**0.5 for food_score, customer_service_score in zip(food_scores, customer_service_scores)]
+    overall_score = sum(sqrt_list) * multiplier
+    return {restaurant_name: round(overall_score, 2)} # FIXME: round may be too cursed
 
 def get_data_fetch_agent_prompt(restaurant_query: str) -> str:
     # TODO
@@ -47,8 +61,9 @@ def main(user_query: str):
     entrypoint_agent.register_for_llm(name="fetch_reviews_for_restaurant", description="Fetches the reviews for a specific restaurant.")(fetch_reviews_for_restaurant)
     entrypoint_agent.register_for_execution(name="fetch_reviews_for_restaurant")(fetch_reviews_for_restaurant)
 
-    # TODO
+    # DONE
     # Create more agents here. 
+    
     
     # TODO
     # Fill in the argument to `initiate_chats` below, calling the correct agents sequentially.
