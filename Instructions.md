@@ -49,7 +49,7 @@ The entry point agent is always the agent responsible for initiating the chat wi
 - `requirements.txt`: contains all of the necessary packages the lab requires. 
 
 ### Task 1: Fetching the Relevant Data
-The first step is to figure out which restaurant review data we need. We should analyze the query using the data fetch agent to determine the correct function call to the fetch function. This data fetch agent will suggest a function call with particular arguments. Then, the entry point agent will execute the suggested function call. By the end of this section, you should be able to fetch the correct reviews for the appropriate restaurants.
+The first step is to figure out which restaurant review data we need. We should analyze the query using the data fetch agent to determine the correct function call to the fetch function. This data fetch agent will suggest a function call with particular arguments. Then, ==the entry point agent will execute== the suggested function call. By the end of this section, you should be able to fetch the correct reviews for the appropriate restaurants.
 
 More explicitly, you will need to write the prompts for the entrypoint agent, register the function `fetch_restaurant_data` for calling/execution, fill out the function `fetch_restaurant_data`, and determine the right arguments for initiating the chat with the entrypoint agent.
 
